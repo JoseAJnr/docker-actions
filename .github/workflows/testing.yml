@@ -36,6 +36,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Set up MySQL
-        run: |
-          sudo systemctl start mysql
-          mysql -uroot -p database_name < ./MYSQL_setup.sql
+      run: |
+        sudo systemctl start mysql
+        mysql -uroot -p database_name < ./MYSQL_setup.sql
