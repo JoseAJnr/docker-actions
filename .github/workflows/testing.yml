@@ -10,7 +10,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    service:
+    services:
       mysql:
         image: mysql
         ports: 3306:3306
