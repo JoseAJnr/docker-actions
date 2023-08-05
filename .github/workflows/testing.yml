@@ -39,7 +39,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: Set up MySQL
       run: |
-        systemctl start mysql
+        sudo systemctl start mysql
     - name: Running Script
       run: |
         mysql -uroot -p database_name < ./MYSQL_setup.sql
