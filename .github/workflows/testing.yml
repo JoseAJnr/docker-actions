@@ -37,13 +37,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Checking MySQL database status
+      run: sudo service mysql status
+
     - name: Set up MySQL
       run: |
-        /etc/init.d/mysql stop
-        service mysql stop
-        killall -KILL mysql mysqld_safe mysqld
-        /etc/init.d/mysql start
-        service mysql start
+        sudo systemctl start mysql
 
     - name: Running Script
       run: |
