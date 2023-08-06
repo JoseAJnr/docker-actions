@@ -41,15 +41,18 @@ jobs:
     - uses: actions/checkout@v3
     - name: Checking MySQL database status
       run: |
-        sudo /etc/init.d/mysql stop
-        sudo service mysql stop
-        sudo killall -KILL mysql mysqld_safe mysqld
-        sudo /etc/init.d/mysql start
-        sudo service mysql start
+        sudo apt-get update
+        export DEBIAN_FRONTEND=noninteractive 
+        wget https://dev.mysql.com/get/mysql-apt-config_0.8.26-1_all.deb
+        sudo apt install ./mysql-apt-config_0.8.26-1_all.deb -y
+        sudo apt update
+        sudo debconf-set-selections <<< "mysql=community-server mysql-community-server/root-pass password ''"
+        sudo debconf-set-selections <<< "mysql-community-server mysql-community-server/re-root-pass password ''"
+        sudo apt-get update && sudo apt-get install -y mysql-community-server
 
-    # - name: Set up MySQL
-    #   run: |
-    #     sudo systemctl start mysql
+    - name: Set up MySQL
+      run: |
+        sudo systemctl start mysql
 
     - name: Running Script
       run: |
