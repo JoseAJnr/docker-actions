@@ -37,11 +37,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Checking MySQL database status
+      run: sudo systemctl status mysql.service
+
     - name: Set up MySQL
       run: |
-        sudo echo "[mysqld]\ninnodb_force_recovery = 1" >> /etc/mysql/my.cnf
         sudo systemctl start mysql
-    
+
     - name: Running Script
       run: |
         mysql -uroot -p database_name < ./MYSQL_setup.sql
