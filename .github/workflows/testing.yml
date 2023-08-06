@@ -52,10 +52,19 @@ jobs:
 
     - name: Set up MySQL
       run: |
+        sudo apt-get upgrade -y
         sudo apt-get install -f
         sudo dpkg --configure -a
         sudo systemctl start mysql
 
+    - name: Testando status
+      if: always()
+      run: journalctl -xeu mysql.service
+
+    - name: Testando status 2
+      if: always()
+      run: systemctl status mysql.service
+    
     - name: Running Script
       run: |
         mysql -uroot -p database_name < ./MYSQL_setup.sql
