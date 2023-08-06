@@ -37,6 +37,13 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      mssql:
+        image: mcr.microsoft.com/mssql/server:latest
+        env:
+          SA_PASSWORD: SqlServer2019!
+          ACCEPT_EULA: 'Y'
+        ports:
+          - 1433:1433
 
     steps:
     - uses: actions/checkout@v3
@@ -53,9 +60,7 @@ jobs:
 
     - name: Set up MySQL
       run: |
-        apt-get upgrade -y
-        apt-get install -f
-        dpkg --configure -a
+        apt-get update && apt-get upgrade -y
         systemctl start mysql
 
     - name: Testando status
