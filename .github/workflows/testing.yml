@@ -1,3 +1,5 @@
+name: Testando databases
+
 on:
   push:
     branches: [ "main" ]
@@ -18,7 +20,7 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: WexRobotLib
-
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
       postgres:
         # Docker Hub image
         image: postgres
@@ -38,11 +40,16 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Checking MySQL database status
-      run: sudo service mysql status
-
-    - name: Set up MySQL
       run: |
-        sudo systemctl start mysql
+        sudo /etc/init.d/mysql stop
+        sudo service mysql stop
+        sudo killall -KILL mysql mysqld_safe mysqld
+        sudo /etc/init.d/mysql start
+        sudo service mysql start
+
+    # - name: Set up MySQL
+    #   run: |
+    #     sudo systemctl start mysql
 
     - name: Running Script
       run: |
