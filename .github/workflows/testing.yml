@@ -63,4 +63,4 @@ jobs:
     
     - name: Running Script
       run: |
-        mysql -u root < ./MYSQL_setup.sql
+        mysql -u root -p root < ./MYSQL_setup.sql
