@@ -1,0 +1,66 @@
+name: Testando databases
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # container: python:3.11-bullseye
+    services:
+      mysql:
+        image: mysql
+        ports:
+        - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: WexRobotLib
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
+      postgres:
+        # Docker Hub image
+        image: postgres
+        ports:
+        - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: WexRobotLib
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      mssql:
+        image: mcr.microsoft.com/mssql/server:latest
+        env:
+          SA_PASSWORD: SqlServer2019!
+          ACCEPT_EULA: 'Y'
+        ports:
+          - 1433:1433
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up MySQL
+      run: |
+        sudo apt-get update && sudo apt-get upgrade -y
+        sudo systemctl start mysql
+
+    - name: Testando status
+      if: always()
+      run: journalctl -xeu mysql.service
+
+    - name: Testando status 2
+      if: always()
+      run: systemctl status mysql.service
+    
+    - name: Running Script
+      run: |
+        mysql -uroot -proot -h localhost < ./MYSQL_setup.sql
