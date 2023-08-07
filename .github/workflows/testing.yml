@@ -47,23 +47,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    # - name: Checking MySQL database status
-    #   run: |
-    #     sudo apt-get update
-    #     export DEBIAN_FRONTEND=noninteractive 
-    #     wget https://dev.mysql.com/get/mysql-apt-config_0.8.26-1_all.deb
-    #     sudo apt install ./mysql-apt-config_0.8.26-1_all.deb -y
-    #     sudo apt update
-    #     sudo debconf-set-selections <<< "mysql-server mysql-server/root-pass password ''"
-    #     sudo debconf-set-selections <<< "mysql-server mysql-server/re-root-pass password ''"
-    #     sudo apt-get update && sudo apt-get install -y mysql-server
 
     - name: Set up MySQL
       run: |
         sudo apt-get update && sudo apt-get upgrade -y
         sudo systemctl start mysql
-#        sudo apt-get install -f
-#        sudo dpkg --configure -a
 
     - name: Testando status
       if: always()
@@ -75,4 +63,4 @@ jobs:
     
     - name: Running Script
       run: |
-        mysql -uroot -p WexRobotLib < ./MYSQL_setup.sql
+        mysql -u root -p WexRobotLib < ./MYSQL_setup.sql
