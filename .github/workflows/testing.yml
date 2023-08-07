@@ -60,8 +60,10 @@ jobs:
 
     - name: Set up MySQL
       run: |
-        apt-get update && apt-get upgrade -y
-        systemctl start mysql
+        sudo apt-get update && sudo apt-get upgrade -y
+        sudo systemctl start mysql
+#        sudo apt-get install -f
+#        sudo dpkg --configure -a
 
     - name: Testando status
       if: always()
